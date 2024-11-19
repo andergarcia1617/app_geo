@@ -4,14 +4,18 @@ import localizacionesRoutes from './routes/localizaciones.routes.js';
 
 const app = express();
 
-// Configurar CORS para permitir solicitudes desde http://localhost:8100
-app.use(cors({
-    origin: 'http://localhost:8100', // Reemplaza con el origen de tu aplicación cliente
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+// Configuración de CORS
+const corsOptions = {
+    origin: '*', // Permitir solicitudes desde cualquier origen (puedes restringirlo si es necesario)
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Métodos HTTP permitidos
     allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
-}));
+    credentials: true, // Si necesitas enviar cookies o encabezados de autorización
+};
 
-app.use(express.json());
+// Middleware
+app.use(cors(corsOptions)); // Activar CORS con las opciones configuradas
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Rutas
 app.use('/api', localizacionesRoutes);
